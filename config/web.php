@@ -48,6 +48,11 @@ $config = [
         */
     ],
     'params' => $params,
+    'modules' => [
+        'calendar' => [
+            'class' => 'app\modules\calendar\Module',
+        ],
+    ],       
 ];
 
 if (YII_ENV_DEV) {
