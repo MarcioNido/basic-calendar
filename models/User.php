@@ -2,103 +2,136 @@
 
 namespace app\models;
 
-class User extends \yii\base\Object implements \yii\web\IdentityInterface
+use Yii;
+
+/**
+ * This is the model class for table "user".
+ *
+ * @property integer $user_id
+ * @property string $name
+ * @property string $username
+ * @property string $password
+ * @property integer $active
+ * @property string $access_token
+ * @property string $auth_key
+ */
+class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
-    public $id;
-    public $username;
-    public $password;
-    public $authKey;
-    public $accessToken;
-
-    private static $users = [
-        '100' => [
-            'id' => '100',
-            'username' => 'admin',
-            'password' => 'admin',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
-        ],
-        '101' => [
-            'id' => '101',
-            'username' => 'demo',
-            'password' => 'demo',
-            'authKey' => 'test101key',
-            'accessToken' => '101-token',
-        ],
-    ];
-
+    /**
+     * @inheritdoc
+     */
+    public static function tableName()
+    {
+        return 'user';
+    }
 
     /**
      * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            [['name', 'username', 'password'], 'required'],
+            [['active'], 'integer'],
+            [['name'], 'string', 'max' => 50],
+            [['username'], 'string', 'max' => 30],
+            [['password', 'access_token', 'auth_key'], 'string', 'max' => 100],
+            [['username'], 'unique'],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'user_id' => 'User ID',
+            'name' => 'Name',
+            'username' => 'Username',
+            'password' => 'Password',
+            'active' => 'Active',
+            'access_token' => 'Access Token',
+            'auth_key' => 'Auth Key',
+        ];
+    }
+    
+    
+    /**
+     * Finds an identity by the given ID.
+     *
+     * @param string|integer $id the ID to be looked for
+     * @return IdentityInterface|null the identity object that matches the given ID.
      */
     public static function findIdentity($id)
     {
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+        return static::findOne($id);
     }
 
     /**
-     * @inheritdoc
+     * Finds an identity by the given token.
+     *
+     * @param string $token the token to be looked for
+     * @return IdentityInterface|null the identity object that matches the given token.
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        foreach (self::$users as $user) {
-            if ($user['accessToken'] === $token) {
-                return new static($user);
-            }
-        }
-
-        return null;
+        return static::findOne(['access_token' => $token]);
     }
-
-    /**
-     * Finds user by username
-     *
-     * @param string $username
-     * @return static|null
-     */
+    
     public static function findByUsername($username)
     {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
-                return new static($user);
-            }
-        }
-
-        return null;
+        return static::findOne(['username' => $username]);
     }
 
     /**
-     * @inheritdoc
+     * @return int|string current user ID
      */
     public function getId()
     {
-        return $this->id;
+        return $this->user_id;
     }
 
     /**
-     * @inheritdoc
+     * @return string current user auth key
      */
     public function getAuthKey()
     {
-        return $this->authKey;
+        return $this->auth_key;
     }
 
     /**
-     * @inheritdoc
+     * @param string $authKey
+     * @return boolean if auth key is valid for current user
      */
     public function validateAuthKey($authKey)
     {
-        return $this->authKey === $authKey;
+        return $this->getAuthKey() === $authKey;
     }
-
+    
     /**
-     * Validates password
-     *
-     * @param string $password password to validate
-     * @return boolean if password provided is valid for current user
+     * Generates authentication key before an insert 
+     * @param type $insert
+     * @return boolean
      */
-    public function validatePassword($password)
+    public function beforeSave($insert)
     {
-        return $this->password === $password;
+        if (parent::beforeSave($insert)) {
+            if ($this->isNewRecord || $this->auth_key === null) {
+                $this->auth_key = \Yii::$app->security->generateRandomString();
+            }
+            return true;
+        }
+        return false;
+    }    
+    
+    /**
+     * Validates a given password 
+     * @param type $password
+     * @return boolean true if the password is correct
+     */
+    public function validatePassword($password) {
+        return Yii::$app->getSecurity()->validatePassword($password, $this->password);
     }
+    
 }

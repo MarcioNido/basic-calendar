@@ -14,7 +14,7 @@ return [
     ],
     'components' => [
         'db' => [
-            'dsn' => 'mysql:host=localhost;dbname=yii2_basic_tests',
+            'dsn' => 'mysql:host=apps.dev;dbname=basic_calendar_test',
         ],
         'mailer' => [
             'useFileTransport' => true,

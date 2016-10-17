@@ -33,7 +33,7 @@ class LoginFormTest extends TestCase
     public function testLoginWrongPassword()
     {
         $model = new LoginForm([
-            'username' => 'demo',
+            'username' => 'DEMO',
             'password' => 'wrong_password',
         ]);
 
@@ -47,8 +47,8 @@ class LoginFormTest extends TestCase
     public function testLoginCorrect()
     {
         $model = new LoginForm([
-            'username' => 'demo',
-            'password' => 'demo',
+            'username' => 'DEMO',
+            'password' => 'DEMO',
         ]);
 
         $this->specify('user should be able to login with correct credentials', function () use ($model) {
