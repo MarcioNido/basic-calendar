@@ -127,6 +127,21 @@ class EventController extends Controller
 
         return $this->redirect(['index']);
     }
+    
+
+    /**
+     * Marks an event as done.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionMarkDone($id)
+    {
+        $model = $this->findModel($id);
+        $model->done = 1;
+        $model->save();
+
+        return $this->redirect(['index']);
+    }    
 
     /**
      * Finds the Event model based on its primary key value.
@@ -156,6 +171,11 @@ class EventController extends Controller
         }
         if (isset($_GET['Filter']['description']) && $_GET['Filter']['description'] != '') {
             $condition[] = ['like', 'description', $_GET['Filter']['description']];
+        }
+        if (isset($_GET['Filter']['done']) && $_GET['Filter']['done'] != '') {
+            $condition[] = ['done' => $_GET['Filter']['done']];
+        } else {
+            $condition[] = ['done' => 0];
         }
         return $condition;
         

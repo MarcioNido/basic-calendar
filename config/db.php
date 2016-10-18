@@ -1,5 +1,4 @@
 <?php
-
 return [
     'class' => 'yii\db\Connection',
     'dsn' => 'mysql:host=apps.dev;dbname=basic_calendar',
@@ -7,3 +6,4 @@ return [
     'password' => '',
     'charset' => 'utf8',
 ];
+

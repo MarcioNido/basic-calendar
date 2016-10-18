@@ -67,10 +67,16 @@ if (isset($_GET['Filter'])) {
                                     <?php //Html::textInput('Filter[date]', $_GET['Filter']['date'], array('class'=>'form-control')); ?>
                                 </div>
                             </div>
-                            <div class="col-md-9">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Description</label>
                                     <?= Html::textInput('Filter[description]', $_GET['Filter']['description'], array('class'=>'form-control')); ?>
+                                </div>
+                            </div>
+                            <div class='col-md-3'>
+                                <div class="form-group">
+                                    <label>Done</label>
+                                    <?= Html::dropDownList('Filter[done]', $_GET['Filter']['done'], [0=>'No', 1=>'Yes'], ['prompt'=>'...', 'class'=>'form-control']); ?>
                                 </div>
                             </div>
                         </div>
@@ -130,7 +136,9 @@ if (isset($_GET['Filter'])) {
                     </div>
                     
                     <div class="col-md-2" style="text-align: right;">
-                        <?= Html::a("<span class='glyphicon glyphicon-check'></span>", ['mark-done', 'id' => $model->event_id], ['class' => 'btn btn-success btn-sm', 'title' => 'Mark as Done', 'onclick' => 'return window.confirm("Mark this event as done ?")']) ?>
+                        <?php if ($model->done == 0) { ?>
+                            <?= Html::a("<span class='glyphicon glyphicon-check'></span>", ['mark-done', 'id' => $model->event_id], ['class' => 'btn btn-success btn-sm', 'title' => 'Mark as Done', 'onclick' => 'return window.confirm("Mark this event as done ?")']) ?>
+                        <?php } ?>
                         <?= Html::a("<span class='glyphicon glyphicon-pencil'></span>", ['update', 'id' => $model->event_id], ['class' => 'btn btn-primary btn-sm', 'title' => 'Edit Event']) ?>
                         <?= Html::a("<span class='glyphicon glyphicon-trash'></span>", ['delete', 'id' => $model->event_id], ['class' => 'btn btn-danger btn-sm', 'title' => 'Delete Event', 'onclick'=>'return window.confirm("Are you sure you want to delete this event ?")']) ?>
                     </div>
