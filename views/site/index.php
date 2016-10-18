@@ -10,7 +10,7 @@ $this->title = 'NIDO Basic Calendar';
     <div class="jumbotron">
         <h1>Basic Calendar</h1>
 
-        <p class="lead">This is a demo application. To see how it was done check the tutorial at: <a href="http://marcionido.info/blog/web/index.php?r=site%2Fphp-yii&page=project">http://marcionido.info.</a></p>
+        <p class="lead">This is a demo application. To see how it was done check the tutorial at: <a href="/blog/web/index.php?r=site%2Fphp-yii&page=project">http://marcionido.info.</a></p>
         <br />
         <br />
         <p>You can sign in using: ADMIN/ADMIN or DEMO/DEMO (uppercase).</p>

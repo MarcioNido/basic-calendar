@@ -9,7 +9,7 @@ use Yii;
  *
  * @property integer $category_id
  * @property string $name
- * @property string $active
+ * @property integer $active
  */
 class Category extends \yii\db\ActiveRecord
 {
@@ -54,5 +54,6 @@ class Category extends \yii\db\ActiveRecord
         $array = static::find()->asArray()->where(['active' => 1])->orderBy('name')->all();
         return \yii\helpers\ArrayHelper::map($array, 'category_id', 'name');
     }
+    
     
 }
