@@ -7,6 +7,7 @@ use yii\grid\GridView;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Categories';
+$this->params['breadcrumbs'][] = ['label'=>'Calendar', 'url'=> ['//calendar/event']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="category-index">
@@ -15,6 +16,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('Create Category', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a("<span class='glyphicon glyphicon-calendar'></span> Back to Calendar", ['//calendar/event'], ['class' => 'btn btn-primary']) ?>
+        
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
